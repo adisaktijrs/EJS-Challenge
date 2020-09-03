@@ -80,22 +80,18 @@ app.post("/compose", (req, res) => {
 
 });
 
-app.get("/posts/:postName", (req, res) => {
-  const requestedTitle = _.lowerCase(req.params.postName);
+app.get("/posts/:postId", (req, res) => {
+  const requestedTitle = req.params.postId;
 
-  posts.forEach(function (post) {
-    const storedTitle = _.lowerCase(post.title);
-    const storedContent = post.content;
-
-    if (storedTitle === requestedTitle) {
-
+  Post.findById(requestedTitle, function(err, foundPost){
+    if (!err) {
       res.render("post", {
-        title: post.title,
-        content: post.content
+        title: foundPost.title,
+        content: foundPost.content
       });
-
     }
   });
+
 
 });
 
